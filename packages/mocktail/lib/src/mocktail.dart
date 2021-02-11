@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:matcher/matcher.dart';
 
 /// {@template mocktail_failure}
@@ -553,6 +555,10 @@ class _StubFunction extends _MockInvocationCall {
   }
 
   void thenReturn([Object? result]) {
+    if (result is FutureOr) {
+      throw ArgumentError('''It is highly discouraged to call `.thenReturn`
+      with a Future. Use `thenAnswer` instead.''');
+    }
     _object._stubs[_invocation] = _Stub((_) => result);
   }
 
