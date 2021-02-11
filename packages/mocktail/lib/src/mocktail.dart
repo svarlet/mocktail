@@ -555,10 +555,12 @@ class _StubFunction extends _MockInvocationCall {
   }
 
   void thenReturn([Object? result]) {
-    assert(!(result is Future), '''
+    if (result is Future) {
+      throw ArgumentError('''
       It is highly discouraged to call `.thenReturn` with a Future.
       Use `thenAnswer` instead.
       ''');
+    }
     _object._stubs[_invocation] = _Stub((_) => result);
   }
 
